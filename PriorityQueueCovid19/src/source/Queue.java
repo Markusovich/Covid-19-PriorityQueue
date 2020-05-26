@@ -51,6 +51,14 @@ public class Queue<T> implements QueueInterface<T> {
 					if(!currentNode.getNextNode().getNodeData().getRisklevel().equals("H")) {
 						break;
 					}
+					if(currentNode.getNextNode().getNodeData().getRisklevel().equals("H")) {
+						if(currentNode.getNextNode().getNodeData().getAge() < newEntry.getAge()) {
+							Node<T> currentNext = currentNode.getNextNode();
+							currentNode.setNextNode(newNode);
+							newNode.setNextNode(currentNext);
+							return true;
+						}
+					}
 					currentNode = currentNode.getNextNode();
 				}
 				Node<T> currentNext = currentNode.getNextNode();
@@ -62,12 +70,20 @@ public class Queue<T> implements QueueInterface<T> {
 				currentNode = firstNode;
 				while(currentNode.getNextNode() != null) {
 					if(!currentNode.getNextNode().getNodeData().getRisklevel().equals("H") && 
-							!currentNode.getNextNode().getNodeData().getRisklevel().equals("M") &&
-							currentNode.getNextNode().getNodeData().getRisklevel().equals("L")) {
+							!currentNode.getNextNode().getNodeData().getRisklevel().equals("M")) {
 						break;
+					}
+					if(currentNode.getNextNode().getNodeData().getRisklevel().equals("M")) {
+						if(currentNode.getNextNode().getNodeData().getAge() < newEntry.getAge()) {
+							Node<T> currentNext = currentNode.getNextNode();
+							currentNode.setNextNode(newNode);
+							newNode.setNextNode(currentNext);
+							return true;
+						}
 					}
 					currentNode = currentNode.getNextNode();
 				}
+				
 				Node<T> currentNext = currentNode.getNextNode();
 				currentNode.setNextNode(newNode);
 				newNode.setNextNode(currentNext);
@@ -76,9 +92,20 @@ public class Queue<T> implements QueueInterface<T> {
 			if(newEntry.getRisklevel().equals("L")) {
 				currentNode = firstNode;
 				while(currentNode.getNextNode() != null) {
+					if(currentNode.getNextNode().getNodeData().getRisklevel().equals("L")) {
+						break;
+					}
 					currentNode = currentNode.getNextNode();
 				}
+				while(currentNode.getNextNode() != null) {
+					if(currentNode.getNextNode().getNodeData().getAge() < newEntry.getAge()) {
+						break;
+					}
+					currentNode = currentNode.getNextNode();
+				}
+				Node<T> currentNext = currentNode.getNextNode();
 				currentNode.setNextNode(newNode);
+				newNode.setNextNode(currentNext);
 				return true;
 			}
 			else {
